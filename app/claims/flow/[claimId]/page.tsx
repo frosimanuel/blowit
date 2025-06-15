@@ -26,13 +26,11 @@ const MOCK_CLAIM: StoredClaim = {
 };
 
 interface FlowPageProps {
-  params: Promise<{ claimId: string }>;
+  params: { claimId: string };
 }
 
 export default function FlowPage({ params }: FlowPageProps) {
-  // Unwrap params using React.use()
-  // @ts-ignore
-  const { claimId } = React.use(params);
+  const { claimId } = params;
   // In a real app, fetch claim from API/DB
   const claim = claimId === 'test-claim' ? MOCK_CLAIM : null;
   const [step, setStep] = useState(0);

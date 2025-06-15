@@ -1,44 +1,29 @@
+import MobileFrame from '@/components/MobileFrame';
 import { StoredClaim } from '@/lib/types';
+import { useParams } from "next/navigation";
+import React from "react";
 
-interface ClaimPageProps {
-  params: { claimId: string };
-}
-
-// Mocked claim for testing
+// Mocked claim for testing (in a real app, fetch from DB)
 const MOCK_CLAIM: StoredClaim = {
   id: 'test-claim',
-  messageData: {
-    from: 'Andreas (@archive_eth)',
-    message: 'you keep getting logged out from ddocs every 15mins',
-    sent: 'Sent on June 14th at 2:01 AM'
-  },
+  messageData: { from: 'Andreas (@archive_eth)', message: 'you keep getting logged out from ddocs every 15mins', sent: 'Sent on June 14th at 2:01 AM' },
   rawProof: {},
-  processedProof: {
-    sender: 'Andreas (@archive_eth)',
-    text: 'you keep getting logged out from ddocs every 15mins',
-    timestamp: 1718320860
-  },
+  processedProof: { sender: 'Andreas (@archive_eth)', text: 'you keep getting logged out from ddocs every 15mins', timestamp: 1718320860 },
   createdAt: new Date().toISOString()
 };
 
-async function fetchClaim(claimId: string): Promise<StoredClaim | null> {
-  if (claimId === 'test-claim') return MOCK_CLAIM;
-  return null;
-}
+export default function Page({ params }: { params: { claimId: string } }) {
+  const { claimId } = params;
+  const claim = claimId === 'test-claim' ? MOCK_CLAIM : null;
 
-export default async function ClaimPage({ params }: ClaimPageProps) {
-  const claim = await fetchClaim(params.claimId);
+  if (!claim) return <MobileFrame><div>Claim not found.</div></MobileFrame>;
 
-  if (!claim) {
-    return <div>Claim not found.</div>;
-  }
-
-  // Render your React flow here, using claim
   return (
-    <div>
-      <h1>Claim Page for ID: {params.claimId}</h1>
-      <pre>{JSON.stringify(claim, null, 2)}</pre>
-      {/* Replace above with your onboarding/evidence flow */}
-    </div>
+    <MobileFrame>
+      <h1>Claim: {claim.id}</h1>
+      <p>From: {claim.messageData.from}</p>
+      <p>Message: {claim.messageData.message}</p>
+      <p>Sent: {claim.messageData.sent}</p>
+    </MobileFrame>
   );
 } 
