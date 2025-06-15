@@ -34,10 +34,45 @@ export async function fetchRawProof(evidenceid: string): Promise<any> {
 }
 
 // Create a new post linking evidence to a wallet
-export async function createPost(evidenceid: string, walletid: string) {
+// Fetch all posts with joined evidence data
+export async function fetchPostsWithEvidence() {
+  // Fetch all posts
+  const { data: posts, error: postsError } = await supabase
+    .from('posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (postsError) throw postsError;
+
+  // Fetch all evidences
+  const { data: evidences, error: evidencesError } = await supabase
+    .from('evidences')
+    .select('evidenceid, messagedata');
+  if (evidencesError) throw evidencesError;
+
+  // Map evidenceid to messagedata
+  const evidenceMap: Record<string, any> = {};
+  (evidences || []).forEach(ev => {
+    evidenceMap[ev.evidenceid] = ev.messagedata;
+  });
+
+  // Join posts with their evidence
+  return (posts || []).map((post: any) => {
+    const messagedata = evidenceMap[post.evidenceid] || {};
+    return {
+      username: messagedata.forward_from?.username || '',
+      text: messagedata.text || '',
+      additionalcontext: post.additionalcontext || '',
+      id: post.id,
+      created_at: post.created_at
+    };
+  });
+}
+
+
+export async function createPost(evidenceid: string, walletid: string, additionalcontext: string) {
   const { data, error } = await supabase
     .from('posts')
-    .insert([{ evidenceid, walletid }])
+    .insert([{ evidenceid, walletid, additionalcontext }])
     .select()
     .single();
   if (error) throw error;

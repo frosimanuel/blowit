@@ -11,16 +11,21 @@ interface ReviewEvidenceProps {
     publicAddress: string;
     railgunAddress: string;
     proof: string;
+    rawproof?: any;
+    id?: string;
   };
-  onPublish: () => void;
+  onPublish?: () => void;
 }
 
 export default function ReviewEvidence({ evidence, onPublish }: ReviewEvidenceProps) {
   return (
     <div className={styles.container}>
-      <h2 className={styles.heading}>
-        Review your evidence
-      </h2>
+      {onPublish && (
+              <h2 className={styles.heading}>
+              Review your evidence
+            </h2>
+        )
+      }
       <div className={styles.evidenceBox}>
         <div className={styles.from}>From: {evidence.from}</div>
         <div className={styles.message}>{evidence.message}</div>
@@ -28,18 +33,28 @@ export default function ReviewEvidence({ evidence, onPublish }: ReviewEvidencePr
       </div>
       <div className={styles.label}>Additional context:</div>
       <div className={styles.context}>{evidence.context || <span style={{ color: '#aaa' }}>(none)</span>}</div>
-      <div className={styles.label}>Your private zk Wallet Address:</div>
-      <div className={styles.address}>{evidence.railgunAddress}</div>
-      <div className={styles.label}>Your public Wallet Address:</div>
-      <div className={styles.address}>{evidence.publicAddress}</div>
+
       <div className={styles.label}>Proof:</div>
       <div className={styles.proof}>{evidence.proof}</div>
-      <button
-        className={styles.button}
-        onClick={onPublish}
-      >
-        Publish Evidence
-      </button>
+      {evidence.rawproof && evidence.id && (
+        <div style={{ margin: '12px 0' }}>
+          <a
+            href={`data:application/json,${encodeURIComponent(JSON.stringify(evidence.rawproof, null, 2))}`}
+            download={`rawproof-${evidence.id}.txt`}
+            style={{ color: '#0070f3', textDecoration: 'underline' }}
+          >
+            Download Raw Proof (.txt)
+          </a>
+        </div>
+      )}
+      {onPublish && (
+        <button
+          className={styles.button}
+          onClick={onPublish}
+        >
+          Publish Evidence
+        </button>
+      )}
     </div>
   );
 } 

@@ -81,7 +81,7 @@ export default function FlowPage({ params }: FlowPageProps) {
     setPublishError(null);
     try {
       // Use evidenceid and walletid (railgunAddress)
-      await createPost(claim.evidenceid, addresses.railgunAddress);
+      await createPost(claim.evidenceid, addresses.railgunAddress, context);
       setStep(4);
     } catch (err: any) {
       setPublishError(err.message || 'Failed to publish evidence');
