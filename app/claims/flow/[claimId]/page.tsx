@@ -11,12 +11,12 @@ import { StoredClaim } from '@/lib/types';
 // Mocked claim for testing
 const MOCK_CLAIM: StoredClaim = {
   id: 'test-claim',
-  messageData: {
+  messagedata: {
     from: 'Andreas (@archive_eth)',
     message: 'you keep getting logged out from ddocs every 15mins',
     sent: 'Sent on June 14th at 2:01 AM'
   },
-  rawProof: {},
+  rawproof: {},
   processedProof: {
     sender: 'Andreas (@archive_eth)',
     text: 'you keep getting logged out from ddocs every 15mins',
@@ -83,9 +83,9 @@ export default function FlowPage({ params }: FlowPageProps) {
       {step === 3 && (
         <ReviewEvidence
           evidence={{
-            from: claim.messageData.from,
-            message: claim.messageData.message,
-            sent: claim.messageData.sent,
+            from: claim.messagedata.from,
+            message: claim.messagedata.message,
+            sent: claim.messagedata.sent,
             context,
             publicAddress: addresses.publicAddress,
             railgunAddress: addresses.railgunAddress,
@@ -97,9 +97,9 @@ export default function FlowPage({ params }: FlowPageProps) {
       {step === 4 && (
         <PublishSuccess
           evidence={{
-            from: claim.messageData.from,
-            message: claim.messageData.message,
-            sent: claim.messageData.sent,
+            from: claim.messagedata.from,
+            message: claim.messagedata.message,
+            sent: claim.messagedata.sent,
             context
           }}
         />

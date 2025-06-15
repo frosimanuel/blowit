@@ -4,7 +4,7 @@ import { fetchPostedEvidences } from "@/lib/claims";
 import type { PostedEvidence } from "@/lib/types";
 
 export default function ClaimsList() {
-  const [evidences, setClaims] = useState<(PostedEvidence & { messageData: any; rawProof: any })[]>([]);
+  const [evidences, setClaims] = useState<(PostedEvidence & { messagedata: any; rawproof: any })[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,12 +36,12 @@ export default function ClaimsList() {
             {evidences.map((evidence) => (
               <tr key={evidence.id}>
                 <td>
-                  <pre style={{ fontSize: 12, whiteSpace: "pre-wrap" }}>{JSON.stringify(evidence.messageData, null, 2)}</pre>
+                  <pre style={{ fontSize: 12, whiteSpace: "pre-wrap" }}>{JSON.stringify(evidence.messagedata, null, 2)}</pre>
                 </td>
                 <td>
                   <a
-                    href={`data:application/json,${encodeURIComponent(JSON.stringify(evidence.rawProof, null, 2))}`}
-                    download={`rawProof-${evidence.id}.json`}
+                    href={`data:application/json,${encodeURIComponent(JSON.stringify(evidence.rawproof, null, 2))}`}
+                    download={`rawproof-${evidence.id}.json`}
                     style={{ color: "#0070f3", textDecoration: "underline" }}
                   >
                     Download

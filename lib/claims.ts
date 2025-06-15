@@ -1,7 +1,20 @@
 import { supabase } from './supabaseClient';
 import { PostedEvidence, EvidencePayload } from './types';
 
-export async function fetchPostedEvidences(): Promise<(PostedEvidence & { messageData: any; rawProof: any })[]> {
+export async function fetchEvidenceById(evidenceid: string): Promise<PostedEvidence & { messagedata: any; rawproof: any } | null> {
+  const { data, error } = await supabase
+    .from('evidences')
+    .select('*')
+    .eq('evidenceid', evidenceid)
+    .single();
+  console.log("FETCHED FOR ", evidenceid)
+  console.log("DATA", data)
+  if (error || !data) return null;
+  console.log("DATA")
+  return data as any;
+}
+
+export async function fetchPostedEvidences(): Promise<(PostedEvidence & { messagedata: any; rawproof: any })[]> {
   const { data, error } = await supabase
     .from('evidences')
     .select('*')
@@ -10,12 +23,12 @@ export async function fetchPostedEvidences(): Promise<(PostedEvidence & { messag
   return data as any[];
 }
 
-export async function fetchRawProof(evidenceId: string): Promise<any> {
+export async function fetchRawProof(evidenceid: string): Promise<any> {
   const { data, error } = await supabase
     .from('evidences')
-    .select('rawProof')
-    .eq('id', evidenceId)
+    .select('rawproof')
+    .eq('id', evidenceid)
     .single();
   if (error) throw error;
-  return data?.rawProof;
+  return data?.rawproof;
 }

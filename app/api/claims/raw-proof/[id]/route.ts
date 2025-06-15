@@ -14,10 +14,10 @@ export async function GET(
     return NextResponse.json({ error: 'Claim not found' }, { status: 404 });
   }
 
-  return new Response(JSON.stringify(claim.rawProof, null, 2), {
+  return new Response(JSON.stringify(claim.rawproof, null, 2), {
     headers: {
       'Content-Type': 'application/json',
-      'Content-Disposition': `attachment; filename=rawProof-${id}.json`,
+      'Content-Disposition': `attachment; filename=rawproof-${id}.json`,
     },
   });
 }

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const claimId = crypto.randomUUID();
 
   // Simulate walletId and claimId for demo
-  const walletId = body.messageData?.forward_from?.username || 'unknown-wallet';
+  const walletId = body.messagedata?.forward_from?.username || 'unknown-wallet';
 
   const dataToStore = {
     id: claimId,

@@ -1,7 +1,7 @@
 // The shape of the data your bot sends to the API
 export interface EvidencePayload {
-  messageData: EvidenceMessageSummary; // Use `any` for now if the object is complex
-  rawProof: any;
+  messagedata: EvidenceMessageSummary; // Use `any` for now if the object is complex
+  rawproof: any;
   processedProof: any;
 }
 
@@ -36,7 +36,7 @@ export interface EvidenceMessageSummary {
 // The full claim object as stored in your database
 export interface PostedEvidence {
   id: string; // The unique ID you generate
-  evidenceId: string;
+  evidenceid: string;
   walletId: string;
   createdAt: string;
 }
