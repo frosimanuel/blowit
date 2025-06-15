@@ -47,7 +47,7 @@ export default function ClaimsList() {
                     Download
                   </a>
                 </td>
-                <td>{evidence.walletId}</td>
+                <td>{evidence.walletid}</td>
                 <td>{evidence.createdAt}</td>
               </tr>
             ))}

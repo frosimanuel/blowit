@@ -32,3 +32,14 @@ export async function fetchRawProof(evidenceid: string): Promise<any> {
   if (error) throw error;
   return data?.rawproof;
 }
+
+// Create a new post linking evidence to a wallet
+export async function createPost(evidenceid: string, walletid: string) {
+  const { data, error } = await supabase
+    .from('posts')
+    .insert([{ evidenceid, walletid }])
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}

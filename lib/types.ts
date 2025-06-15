@@ -37,6 +37,6 @@ export interface EvidenceMessageSummary {
 export interface PostedEvidence {
   id: string; // The unique ID you generate
   evidenceid: string;
-  walletId: string;
+  walletid: string;
   createdAt: string;
 }

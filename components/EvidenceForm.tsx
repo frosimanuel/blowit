@@ -4,15 +4,15 @@ import styles from './EvidenceForm.module.css';
 
 interface EvidenceFormProps {
   onNext: (context: string) => void;
+  evidence: {
+    from: string;
+    message: string;
+    sent: string;
+  };
 }
 
-export default function EvidenceForm({ onNext }: EvidenceFormProps) {
+export default function EvidenceForm({ onNext, evidence }: EvidenceFormProps) {
   const [context, setContext] = useState('');
-  const [evidence] = useState({
-    from: 'Andreas (@archive_eth)',
-    message: 'you keep getting logged out from ddocs every 15mins',
-    sent: 'Sent on June 14th at 2:01 AM'
-  });
 
   return (
     <div className={styles.container}>

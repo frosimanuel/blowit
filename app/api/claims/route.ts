@@ -10,13 +10,13 @@ export async function POST(request: Request) {
 
   const claimId = crypto.randomUUID();
 
-  // Simulate walletId and claimId for demo
-  const walletId = body.messagedata?.forward_from?.username || 'unknown-wallet';
+  // Simulate walletid and claimId for demo
+  const walletid = body.messagedata?.forward_from?.username || 'unknown-wallet';
 
   const dataToStore = {
     id: claimId,
     claimId: claimId,
-    walletId,
+    walletid,
     createdAt: new Date().toISOString(),
     ...body
   };
