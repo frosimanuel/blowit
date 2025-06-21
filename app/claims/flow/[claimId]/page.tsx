@@ -14,7 +14,8 @@ import SeedPhraseConfirm from '@/components/SeedPhraseConfirm';
 import ReviewEvidence from '@/components/ReviewEvidence';
 import PublishSuccess from '@/components/PublishSuccess';
 import MobileFrame from '@/components/MobileFrame';
-import { StoredClaim } from '@/lib/types';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import ErrorMessage from '@/components/ErrorMessage';
 
 // Mocked claim for testing
 import { fetchEvidenceById } from '@/lib/claims';
@@ -55,7 +56,7 @@ export default function FlowPage({ params }: FlowPageProps) {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('https://railgun-server.onrender.com/wallet/create', {
+      const response = await fetch('http://46.62.138.104:10000/wallet/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: 'nopasswordneeded' })
@@ -91,10 +92,10 @@ export default function FlowPage({ params }: FlowPageProps) {
   };
 
   if (!claim) return <div>Claim not found.</div>;
-  if (loading) return <MobileFrame><div>Loading…</div></MobileFrame>;
-  if (error) return <MobileFrame><div style={{ color: 'red' }}>Error: {error}</div></MobileFrame>;
-  if (publishing) return <MobileFrame><div>Publishing evidence…</div></MobileFrame>;
-  if (publishError) return <MobileFrame><div style={{ color: 'red' }}>Publish failed: {publishError}</div></MobileFrame>;
+  if (loading) return <MobileFrame><LoadingSpinner /></MobileFrame>;
+  if (error) return <MobileFrame><ErrorMessage message={error} onRetry={() => window.location.reload()} /></MobileFrame>;
+  if (publishing) return <MobileFrame><LoadingSpinner text="Publishing evidence..." subtext="Your evidence is being published to the blockchain." /></MobileFrame>;
+  if (publishError) return <MobileFrame><ErrorMessage title="Publish Failed" message={publishError} onRetry={handlePublishEvidence} /></MobileFrame>;
 
   return (
     <MobileFrame>

@@ -1,0 +1,37 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.container:hover {
+  background-color: #f0f0f0;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  color: #686868;
+  transition: color 0.2s ease;
+}
+
+.container:hover .icon {
+  color: #444;
+}
+
+.text {
+  font-weight: 500;
+  color: #444;
+}
+
+.copied {
+  color: #0070f3;
+}
+
+.copied .icon {
+  color: #0070f3;
+} 

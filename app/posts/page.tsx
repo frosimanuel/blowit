@@ -2,7 +2,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { fetchPostsWithEvidence } from '@/lib/claims';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 interface PostOverview {
   id: string;
@@ -16,6 +18,7 @@ export default function PostsPage() {
   const [posts, setPosts] = useState<PostOverview[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -30,8 +33,12 @@ export default function PostsPage() {
     })();
   }, []);
 
-  if (loading) return <main style={{ padding: 24 }}>Loading posts…</main>;
-  if (error) return <main style={{ padding: 24, color: 'red' }}>{error}</main>;
+  const handleRowClick = (postId: string) => {
+    router.push(`/posts/${postId}`);
+  };
+
+  if (loading) return <main style={{ padding: 24 }}><LoadingSpinner text="Loading posts..." subtext="Fetching published evidence." /></main>;
+  if (error) return <main style={{ padding: 24, color: 'red' }}>Error: {error}</main>;
 
   return (
     <main style={{ padding: 24, maxWidth: 700, margin: '0 auto' }}>
@@ -46,13 +53,25 @@ export default function PostsPage() {
         </thead>
         <tbody>
           {posts.map(post => (
-            <Link key={post.id} href={`/posts/${post.id}`} legacyBehavior>
-              <tr style={{ borderBottom: '1px solid #eee', cursor: 'pointer' }}>
-                <td style={{ padding: 8 }}>{post.username}</td>
-                <td style={{ padding: 8 }}>{post.text}</td>
-                <td style={{ padding: 8 }}>{post.additionalcontext}</td>
-              </tr>
-            </Link>
+            <tr 
+              key={post.id} 
+              style={{ 
+                borderBottom: '1px solid #eee', 
+                cursor: 'pointer',
+                transition: 'background-color 0.2s ease'
+              }}
+              onClick={() => handleRowClick(post.id)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
+              <td style={{ padding: 8 }}>{post.username}</td>
+              <td style={{ padding: 8 }}>{post.text}</td>
+              <td style={{ padding: 8 }}>{post.additionalcontext}</td>
+            </tr>
           ))}
         </tbody>
       </table>

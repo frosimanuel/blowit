@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { fetchPostedEvidences } from "@/lib/claims";
 import type { PostedEvidence } from "@/lib/types";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function ClaimsList() {
   const [evidences, setClaims] = useState<(PostedEvidence & { messagedata: any; rawproof: any })[]>([]);
@@ -15,7 +16,7 @@ export default function ClaimsList() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>Loading evidences...</div>;
+  if (loading) return <LoadingSpinner text="Loading evidences..." subtext="Fetching your evidence data." />;
   if (error) return <div style={{ color: 'red' }}>Error: {error}</div>;
 
   return (

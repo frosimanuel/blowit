@@ -4,6 +4,10 @@ import { useParams } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import ReviewEvidence from '@/components/ReviewEvidence';
 import Link from 'next/link';
+import { fetchEvidenceById } from '@/lib/claims';
+import { fetchPostsWithEvidence } from '@/lib/claims';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import CopyButton from '@/components/CopyButton';
 
 export default function PostDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -39,8 +43,8 @@ export default function PostDetailPage() {
     })();
   }, [id]);
 
-  if (loading) return <main style={{ padding: 24 }}>Loading…</main>;
-  if (error) return <main style={{ padding: 24, color: 'red' }}>{error}</main>;
+  if (loading) return <main style={{ padding: 24 }}><LoadingSpinner text="Loading post..." subtext="Fetching post details." /></main>;
+  if (error) return <main style={{ padding: 24, color: 'red' }}>Error: {error}</main>;
   if (!post || !evidence) return <main style={{ padding: 24 }}>Not found</main>;
 
   return (
@@ -66,8 +70,18 @@ export default function PostDetailPage() {
           proof: evidence.rawproof ? `${JSON.stringify(evidence.rawproof).length / 1024} KB` : '',
         }}
       />
+      <div style={{ marginTop: 16, textAlign: 'center' }}>
+        <a
+          href={`data:application/json,${encodeURIComponent(JSON.stringify(evidence.rawproof, null, 2))}`}
+          download={`rawproof-${evidence.id}.txt`}
+          style={{ color: '#0070f3', textDecoration: 'underline' }}
+        >
+          Download Raw Proof (.txt)
+        </a>
+      </div>
       <div style={{marginTop: 24}}>
-        <strong>Wallet ID for donations:</strong> {post.walletid}
+        <strong>Wallet ID for donations:</strong> 
+        <CopyButton text={post.walletid} />
       </div>
     </main>
   );
