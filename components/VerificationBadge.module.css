@@ -1,0 +1,24 @@
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: #e8f5e8;
+  color: #2d5a2d;
+  border-radius: 8px;
+  border: 1px solid #4caf50;
+  font-weight: 500;
+  font-size: 14px;
+  max-width: fit-content;
+}
+
+.timestamp {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-left: 4px;
+}
+
+.compact {
+  padding: 4px 8px;
+  font-size: 12px;
+} 

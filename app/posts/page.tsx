@@ -12,6 +12,7 @@ interface PostOverview {
   text: string;
   additionalcontext: string;
   created_at: string;
+  self_verified?: boolean;
 }
 
 export default function PostsPage() {
@@ -49,6 +50,7 @@ export default function PostsPage() {
             <th style={{ textAlign: 'left', padding: 8 }}>Username</th>
             <th style={{ textAlign: 'left', padding: 8 }}>Message</th>
             <th style={{ textAlign: 'left', padding: 8 }}>Additional Context</th>
+            <th style={{ textAlign: 'center', padding: 8 }}>Verified</th>
           </tr>
         </thead>
         <tbody>
@@ -71,6 +73,24 @@ export default function PostsPage() {
               <td style={{ padding: 8 }}>{post.username}</td>
               <td style={{ padding: 8 }}>{post.text}</td>
               <td style={{ padding: 8 }}>{post.additionalcontext}</td>
+              <td style={{ padding: 8, textAlign: 'center' }}>
+                {post.self_verified ? (
+                  <span style={{ 
+                    color: '#2d5a2d', 
+                    fontWeight: '500',
+                    fontSize: '14px'
+                  }}>
+                    ✅ Verified
+                  </span>
+                ) : (
+                  <span style={{ 
+                    color: '#686868', 
+                    fontSize: '14px'
+                  }}>
+                    —
+                  </span>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

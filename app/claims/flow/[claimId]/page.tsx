@@ -16,6 +16,7 @@ import PublishSuccess from '@/components/PublishSuccess';
 import MobileFrame from '@/components/MobileFrame';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ErrorMessage from '@/components/ErrorMessage';
+import SelfVerification from '@/components/SelfVerification';
 
 // Mocked claim for testing
 import { fetchEvidenceById } from '@/lib/claims';
@@ -35,6 +36,8 @@ export default function FlowPage({ params }: FlowPageProps) {
   const [addresses, setAddresses] = useState({ publicAddress: '', railgunAddress: '' });
   const [publishing, setPublishing] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [selfVerified, setSelfVerified] = useState(false);
+  const [selfProofData, setSelfProofData] = useState<string | null>(null);
 
   React.useEffect(() => {
     (async () => {
@@ -81,14 +84,24 @@ export default function FlowPage({ params }: FlowPageProps) {
     setPublishing(true);
     setPublishError(null);
     try {
-      // Use evidenceid and walletid (railgunAddress)
-      await createPost(claim.evidenceid, addresses.railgunAddress, context);
+      // Create the post with verification data included
+      const post = await createPost(claim.evidenceid, addresses.railgunAddress, context, selfVerified, selfProofData || undefined);
       setStep(4);
     } catch (err: any) {
       setPublishError(err.message || 'Failed to publish evidence');
     } finally {
       setPublishing(false);
     }
+  };
+
+  const handleSelfVerified = (verificationData: any) => {
+    setSelfVerified(true);
+    setSelfProofData(JSON.stringify(verificationData));
+    setStep(3); // Move to review step
+  };
+
+  const handleSelfSkip = () => {
+    setStep(3); // Move to review step without verification
   };
 
   if (!claim) return <div>Claim not found.</div>;
@@ -113,7 +126,13 @@ export default function FlowPage({ params }: FlowPageProps) {
         <SeedPhraseDisplay mnemonic={mnemonic} onNext={() => setStep(2)} />
       )}
       {step === 2 && (
-        <SeedPhraseConfirm mnemonic={mnemonic} onConfirm={() => setStep(3)} onBack={() => setStep(1)} />
+        <SeedPhraseConfirm mnemonic={mnemonic} onConfirm={() => setStep(2.5)} onBack={() => setStep(1)} />
+      )}
+      {step === 2.5 && (
+        <SelfVerification
+          onVerified={handleSelfVerified}
+          onSkip={handleSelfSkip}
+        />
       )}
       {step === 3 && (
         <>
@@ -128,6 +147,7 @@ export default function FlowPage({ params }: FlowPageProps) {
               proof: '24KBs on June 14th at 5:43 PM'
             }}
             onPublish={handlePublishEvidence}
+            selfVerified={selfVerified}
           />
           <div style={{ marginTop: 16, textAlign: 'center' }}>
             <a
@@ -153,6 +173,7 @@ export default function FlowPage({ params }: FlowPageProps) {
             rawproof: claim.rawproof,
             id: claim.id
           }}
+          selfVerified={selfVerified}
         />
       )}
     </MobileFrame>

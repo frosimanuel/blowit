@@ -63,16 +63,39 @@ export async function fetchPostsWithEvidence() {
       text: messagedata.text || '',
       additionalcontext: post.additionalcontext || '',
       id: post.id,
-      created_at: post.created_at
+      created_at: post.created_at,
+      self_verified: post.self_verified || false
     };
   });
 }
 
 
-export async function createPost(evidenceid: string, walletid: string, additionalcontext: string) {
+export async function createPost(evidenceid: string, walletid: string, additionalcontext: string, selfVerified: boolean = false, selfProofData?: string) {
   const { data, error } = await supabase
     .from('posts')
-    .insert([{ evidenceid, walletid, additionalcontext }])
+    .insert([{ 
+      evidenceid, 
+      walletid, 
+      additionalcontext,
+      self_verified: selfVerified,
+      self_proof_data: selfProofData,
+      self_verification_timestamp: selfVerified ? new Date().toISOString() : null
+    }])
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updatePostVerification(postId: string, verified: boolean, proofData?: string) {
+  const { data, error } = await supabase
+    .from('posts')
+    .update({ 
+      self_verified: verified,
+      self_proof_data: proofData,
+      self_verification_timestamp: verified ? new Date().toISOString() : null
+    })
+    .eq('id', postId)
     .select()
     .single();
   if (error) throw error;

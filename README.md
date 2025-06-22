@@ -1,9 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BlowIt - Privacy-First Evidence Platform
+
+BlowIt is a privacy-focused platform for sharing evidence with optional human verification using Self Protocol. Built with Next.js, React, and Supabase.
+
+## Features
+
+- 🔒 **Privacy-First**: Minimal data collection, only essential verification
+- ✅ **Optional Human Verification**: Self Protocol integration for credibility
+- 🎯 **Evidence Sharing**: Secure and verifiable evidence publication
+- 🛡️ **Blockchain Integration**: Railgun Community wallet support
+- 📱 **Mobile Optimized**: Responsive design with PWA support
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **Verification**: Self Protocol
+- **Blockchain**: Railgun Community Wallet
+- **Deployment**: Vercel
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+- Supabase account
+- Self Protocol setup (optional)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/your-username/blowit.git
+cd blowit
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
+
+Fill in your environment variables:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 # or
@@ -14,23 +71,75 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL | Yes |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous key | Yes |
+| `SUPABASE_SERVICE_ROLE_KEY` | Your Supabase service role key | Yes |
 
-## Learn More
+## Self Protocol Integration
 
-To learn more about Next.js, take a look at the following resources:
+BlowIt integrates with Self Protocol for optional human verification:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **QR Code Generation**: Users can scan a QR code with the Self app
+2. **Privacy-First**: Only shares nationality and age verification
+3. **Backend Verification**: Your backend verifies proofs using SelfBackendVerifier
+4. **Verification Badges**: Users receive verification badges for credibility
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Backend Setup
 
-## Deploy on Vercel
+Your backend needs a `/verify` endpoint that accepts proof verification requests from Self Protocol. See the backend documentation for implementation details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Database Schema
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The application uses Supabase with the following main tables:
+
+- `posts`: Evidence posts with verification status
+- `claims`: User claims and evidence
+- `users`: User profiles and verification data
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Add your environment variables
+4. Deploy!
+
+### Other Platforms
+
+The app can be deployed to any platform that supports Next.js:
+- Netlify
+- Railway
+- DigitalOcean App Platform
+- AWS Amplify
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+- **Website**: [https://goblow.it](https://goblow.it)
+- **Documentation**: [https://docs.goblow.it](https://docs.goblow.it)
+- **Issues**: [GitHub Issues](https://github.com/your-username/blowit/issues)
+
+## Acknowledgments
+
+- [Self Protocol](https://self.xyz) for privacy-preserving verification
+- [Railgun Community](https://railgun.org) for privacy-focused blockchain integration
+- [Supabase](https://supabase.com) for the backend infrastructure
+- [Next.js](https://nextjs.org) for the amazing React framework

@@ -1,0 +1,33 @@
+{
+  "name": "BlowIt - Privacy-First Evidence Platform",
+  "short_name": "BlowIt",
+  "description": "Share evidence with optional human verification. Built with privacy and credibility in mind.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#E9620E",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/blow-it-logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/blow-it-logo.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/blow-it-logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr"
+} 

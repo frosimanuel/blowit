@@ -53,6 +53,31 @@ export default function PostDetailPage() {
         ← Back to all posts
       </Link>
       <h1 style={{ marginBottom: 24 }}>Post Details</h1>
+      
+      {/* Self Verification Badge */}
+      {post.self_verified && (
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '8px', 
+          padding: '12px 16px', 
+          backgroundColor: '#e8f5e8', 
+          color: '#2d5a2d', 
+          borderRadius: '8px', 
+          marginBottom: '24px',
+          border: '1px solid #4caf50',
+          maxWidth: 'fit-content'
+        }}>
+          <span>✅</span>
+          <span style={{ fontWeight: '500' }}>Identity Verified</span>
+          {post.self_verification_timestamp && (
+            <span style={{ fontSize: '12px', opacity: 0.8 }}>
+              • {new Date(post.self_verification_timestamp).toLocaleDateString()}
+            </span>
+          )}
+        </div>
+      )}
+      
       <ReviewEvidence
         evidence={{
           from: evidence.messagedata.forward_from?.username || '',

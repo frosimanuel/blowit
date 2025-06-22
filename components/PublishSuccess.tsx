@@ -14,13 +14,34 @@ interface PublishSuccessProps {
     rawproof: any;
     id: string;
   };
+  selfVerified?: boolean;
 }
 
-export default function PublishSuccess({ evidence }: PublishSuccessProps) {
+export default function PublishSuccess({ evidence, selfVerified }: PublishSuccessProps) {
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Congratulations!</h2>
       <div className={styles.subtitle}>Your evidence is published.</div>
+      
+      {/* Self Verification Badge */}
+      {selfVerified && (
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '8px', 
+          padding: '12px 16px', 
+          backgroundColor: '#e8f5e8', 
+          color: '#2d5a2d', 
+          borderRadius: '8px', 
+          marginBottom: '24px',
+          border: '1px solid #4caf50',
+          maxWidth: 'fit-content'
+        }}>
+          <span>✅</span>
+          <span style={{ fontWeight: '500' }}>Identity Verified</span>
+        </div>
+      )}
+      
       <div className={styles.evidenceBox}>
         <div className={styles.from}>From: {evidence.from}</div>
         <div className={styles.message}>{evidence.message}</div>

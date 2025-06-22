@@ -15,9 +15,10 @@ interface ReviewEvidenceProps {
     id?: string;
   };
   onPublish?: () => void;
+  selfVerified?: boolean;
 }
 
-export default function ReviewEvidence({ evidence, onPublish }: ReviewEvidenceProps) {
+export default function ReviewEvidence({ evidence, onPublish, selfVerified }: ReviewEvidenceProps) {
   return (
     <div className={styles.container}>
       {onPublish && (
@@ -26,6 +27,25 @@ export default function ReviewEvidence({ evidence, onPublish }: ReviewEvidencePr
             </h2>
         )
       }
+      
+      {/* Self Verification Badge */}
+      {selfVerified && (
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '8px', 
+          padding: '8px 12px', 
+          backgroundColor: '#e8f5e8', 
+          color: '#2d5a2d', 
+          borderRadius: '8px', 
+          marginBottom: '16px',
+          border: '1px solid #4caf50'
+        }}>
+          <span>✅</span>
+          <span style={{ fontWeight: '500' }}>Identity Verified</span>
+        </div>
+      )}
+      
       <div className={styles.evidenceBox}>
         <div className={styles.from}>From: {evidence.from}</div>
         <div className={styles.message}>{evidence.message}</div>

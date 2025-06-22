@@ -40,3 +40,22 @@ export interface PostedEvidence {
   walletid: string;
   createdAt: string;
 }
+
+// Self verification interface
+export interface SelfVerification {
+  verified: boolean;
+  proofId?: string;
+  verificationDate?: string;
+}
+
+// Updated post interface with Self verification
+export interface Post {
+  id: string;
+  evidenceid: string;
+  walletid: string;
+  additionalcontext: string;
+  created_at: string;
+  self_verified?: boolean;
+  self_proof_id?: string;
+  self_verification_date?: string;
+}
