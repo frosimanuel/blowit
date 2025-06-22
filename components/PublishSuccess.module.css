@@ -35,4 +35,42 @@
 .context {
   font-style: italic;
   margin-bottom: 16px;
+}
+.address {
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  word-break: break-all;
+}
+.proof {
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.redirectButton {
+  background: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 32px;
+}
+.redirectButton:hover {
+  background: #0051cc;
+}
+.redirectText {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #666;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
 } 

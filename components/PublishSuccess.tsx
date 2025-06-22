@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './PublishSuccess.module.css';
 
 interface PublishSuccessProps {
@@ -18,6 +19,12 @@ interface PublishSuccessProps {
 }
 
 export default function PublishSuccess({ evidence, selfVerified }: PublishSuccessProps) {
+  const router = useRouter();
+
+  const handleViewPosts = () => {
+    router.push('/posts');
+  };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.heading}>Congratulations!</h2>
@@ -62,6 +69,19 @@ export default function PublishSuccess({ evidence, selfVerified }: PublishSucces
         >
           Download Raw Proof (.txt)
         </a>
+      </div>
+
+      {/* Redirect Button */}
+      <div style={{ textAlign: 'center' }}>
+        <button
+          onClick={handleViewPosts}
+          className={styles.redirectButton}
+        >
+          View All Posts
+        </button>
+        <p className={styles.redirectText}>
+          See your published evidence and other posts in the community
+        </p>
       </div>
     </div>
   );
