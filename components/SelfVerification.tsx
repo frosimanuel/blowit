@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import SelfQRcodeWrapper, { SelfAppBuilder, countries } from '@selfxyz/qrcode';
 import { v4 as uuidv4 } from 'uuid';
 import { supabase } from '@/lib/supabaseClient';
 import styles from './SelfVerification.module.css';
@@ -17,6 +16,9 @@ export default function SelfVerification({ onVerified, onSkip, postId }: SelfVer
   const [userId, setUserId] = useState<string | null>(null);
   const [verificationStatus, setVerificationStatus] = useState<VerificationStatus>('none');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [SelfQRcodeWrapper, setSelfQRcodeWrapper] = useState<any>(null);
+  const [selfApp, setSelfApp] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Your backend verification endpoint
   const BACKEND_URL = 'https://api.goblow.it/verify';
@@ -25,6 +27,62 @@ export default function SelfVerification({ onVerified, onSkip, postId }: SelfVer
     // Generate a user ID when the component mounts
     setUserId(uuidv4());
   }, []);
+
+  useEffect(() => {
+    const initializeSelf = async () => {
+      try {
+        // Dynamically import the Self components to avoid build-time issues
+        const { default: QRWrapper, SelfAppBuilder, countries } = await import('@selfxyz/qrcode');
+        
+        setSelfQRcodeWrapper(() => QRWrapper);
+
+        // Configure what information will be shared
+        const disclosures = {
+          // Only share nationality - minimal disclosure for privacy
+          issuing_state: false,
+          name: false,
+          nationality: true,
+          date_of_birth: false,
+          passport_number: false,
+          gender: false,
+          expiry_date: false,
+          // Verification rules
+          minimumAge: 18,
+          excludedCountries: [
+            countries.IRAN,
+            countries.IRAQ,
+            countries.NORTH_KOREA,
+            countries.RUSSIA,
+            countries.SYRIAN_ARAB_REPUBLIC,
+            countries.VENEZUELA
+          ],
+          ofac: true, // Check against sanctions list
+        };
+
+        // Create the SelfApp configuration
+        const app = new SelfAppBuilder({
+          appName: "BlowIt",
+          scope: "goblowit-app-scope",
+          endpoint: BACKEND_URL,
+          endpointType: "https",
+          userId: userId!,
+          disclosures,
+          devMode: false,
+        }).build();
+
+        setSelfApp(app);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error initializing Self components:', error);
+        setErrorMessage('Failed to initialize verification system. Please try again.');
+        setIsLoading(false);
+      }
+    };
+
+    if (userId) {
+      initializeSelf();
+    }
+  }, [userId]);
 
   const handleVerificationSuccess = () => {
     console.log('Self verification successful!');
@@ -91,52 +149,40 @@ export default function SelfVerification({ onVerified, onSkip, postId }: SelfVer
     }
   };
 
-  // Show loading if userId isn't generated yet
-  if (!userId) {
+  // Show loading if components aren't initialized yet
+  if (isLoading || !userId || !SelfQRcodeWrapper || !selfApp) {
     return (
       <div className={styles.container}>
         <h2 className={styles.heading}>Verify Your Identity</h2>
-        <div className={styles.verificationStatus}>
-          <span>⏳</span>
-          Initializing verification system...
-        </div>
+        {errorMessage ? (
+          <div className={`${styles.verificationStatus} ${styles.verificationError}`}>
+            <span>❌</span>
+            {errorMessage}
+            <br />
+            <button 
+              onClick={() => window.location.reload()}
+              style={{
+                marginTop: '8px',
+                padding: '4px 8px',
+                backgroundColor: '#0070f3',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              Retry
+            </button>
+          </div>
+        ) : (
+          <div className={styles.verificationStatus}>
+            <span>⏳</span>
+            Initializing verification system...
+          </div>
+        )}
       </div>
     );
   }
-
-  // Configure what information will be shared
-  const disclosures = {
-    // Only share nationality - minimal disclosure for privacy
-    issuing_state: false,
-    name: false,
-    nationality: true,
-    date_of_birth: false,
-    passport_number: false,
-    gender: false,
-    expiry_date: false,
-    // Verification rules
-    minimumAge: 18,
-    excludedCountries: [
-      countries.IRAN,
-      countries.IRAQ,
-      countries.NORTH_KOREA,
-      countries.RUSSIA,
-      countries.SYRIAN_ARAB_REPUBLIC,
-      countries.VENEZUELA
-    ],
-    ofac: true, // Check against sanctions list
-  };
-
-  // Create the SelfApp configuration
-  const selfApp = new SelfAppBuilder({
-    appName: "BlowIt",
-    scope: "goblowit-app-scope",
-    endpoint: BACKEND_URL,
-    endpointType: "https",
-    userId,
-    disclosures,
-    devMode: false,
-  }).build();
 
   return (
     <div className={styles.container}>
