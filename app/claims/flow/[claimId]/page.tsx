@@ -56,7 +56,7 @@ export default function FlowPage({ params }: FlowPageProps) {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://46.62.138.104:10000/wallet/create', {
+      const response = await fetch('https://api.goblow.it/wallet/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: 'nopasswordneeded' })
