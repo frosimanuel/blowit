@@ -111,22 +111,28 @@ export default function FlowPage({ params }: FlowPageProps) {
   if (publishError) return <MobileFrame><ErrorMessage title="Publish Failed" message={publishError} onRetry={handlePublishEvidence} /></MobileFrame>;
 
   return (
-    <MobileFrame>
+    <>
       {step === 0 && claim && (
-        <EvidenceForm 
-          onNext={handleEvidenceNext} 
-          evidence={{
-            from: claim.messagedata.forward_from?.username,
-            message: claim.messagedata.text,
-            sent: claim.messagedata.forward_date? formatTimestamp(claim.messagedata.forward_date): ""
-          }}
-        /> 
+        <MobileFrame>
+          <EvidenceForm 
+            onNext={handleEvidenceNext} 
+            evidence={{
+              from: claim.messagedata.forward_from?.username,
+              message: claim.messagedata.text,
+              sent: claim.messagedata.forward_date? formatTimestamp(claim.messagedata.forward_date): ""
+            }}
+          /> 
+        </MobileFrame>
       )}
       {step === 1 && (
-        <SeedPhraseDisplay mnemonic={mnemonic} onNext={() => setStep(2)} />
+        <MobileFrame>
+          <SeedPhraseDisplay mnemonic={mnemonic} onNext={() => setStep(2)} />
+        </MobileFrame>
       )}
       {step === 2 && (
-        <SeedPhraseConfirm mnemonic={mnemonic} onConfirm={() => setStep(2.5)} onBack={() => setStep(1)} />
+        <MobileFrame>
+          <SeedPhraseConfirm mnemonic={mnemonic} onConfirm={() => setStep(2.5)} onBack={() => setStep(1)} />
+        </MobileFrame>
       )}
       {step === 2.5 && (
         <SelfVerification
@@ -135,7 +141,7 @@ export default function FlowPage({ params }: FlowPageProps) {
         />
       )}
       {step === 3 && (
-        <>
+        <MobileFrame>
           <ReviewEvidence
             evidence={{
               from: claim.messagedata.forward_from?.username,
@@ -158,24 +164,26 @@ export default function FlowPage({ params }: FlowPageProps) {
               Download Raw Proof (.txt)
             </a>
           </div>
-        </>
+        </MobileFrame>
       )}
       {step === 4 && (
-        <PublishSuccess
-          evidence={{
-            from: claim.messagedata.forward_from?.username,
-            message: claim.messagedata.text,
-            sent: claim.messagedata.forward_date ? formatTimestamp(claim.messagedata.forward_date) : "",
-            context,
-            publicAddress: addresses.publicAddress,
-            railgunAddress: addresses.railgunAddress,
-            proof: '24KBs on June 14th at 5:43 PM',
-            rawproof: claim.rawproof,
-            id: claim.id
-          }}
-          selfVerified={selfVerified}
-        />
+        <MobileFrame>
+          <PublishSuccess
+            evidence={{
+              from: claim.messagedata.forward_from?.username,
+              message: claim.messagedata.text,
+              sent: claim.messagedata.forward_date ? formatTimestamp(claim.messagedata.forward_date) : "",
+              context,
+              publicAddress: addresses.publicAddress,
+              railgunAddress: addresses.railgunAddress,
+              proof: '24KBs on June 14th at 5:43 PM',
+              rawproof: claim.rawproof,
+              id: claim.id
+            }}
+            selfVerified={selfVerified}
+          />
+        </MobileFrame>
       )}
-    </MobileFrame>
+    </>
   );
 } 

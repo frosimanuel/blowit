@@ -72,6 +72,13 @@
   border: 2px dashed #D9D9D9;
 }
 
+.skipButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
 .skipButton {
   background: none;
   border: none;
@@ -80,10 +87,39 @@
   cursor: pointer;
   font-size: 14px;
   margin-top: 16px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
 }
 
 .skipButton:hover {
   color: #444;
+  background: #f0f0f0;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 12px;
+  }
+  .skipButtonContainer {
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .skipButton {
+    font-size: 18px;
+    padding: 14px 24px;
+    margin-top: 8px;
+    width: 100%;
+    background: #f8f9fa;
+    color: #1976d2;
+    border: 1px solid #bbdefb;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .skipButton:active {
+    background: #e3f2fd;
+  }
 }
 
 .verificationStatus {

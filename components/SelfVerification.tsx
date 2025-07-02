@@ -186,6 +186,15 @@ export default function SelfVerification({ onVerified, onSkip, postId }: SelfVer
 
   return (
     <div className={styles.container}>
+      <div className={styles.skipButtonContainer}>
+        <button 
+          className={styles.skipButton}
+          onClick={onSkip}
+          disabled={verificationStatus === 'pending'}
+        >
+          Skip verification
+        </button>
+      </div>
       <h2 className={styles.heading}>Verify Your Identity</h2>
       
       <div className={styles.description}>
@@ -224,14 +233,6 @@ export default function SelfVerification({ onVerified, onSkip, postId }: SelfVer
       </div>
 
       {renderStatusMessage()}
-
-      <button 
-        className={styles.skipButton}
-        onClick={onSkip}
-        disabled={verificationStatus === 'pending'}
-      >
-        Skip verification
-      </button>
     </div>
   );
 } 
